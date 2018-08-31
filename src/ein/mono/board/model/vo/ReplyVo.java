@@ -9,6 +9,7 @@ public class ReplyVo {
 	private String reply_content;
 	private Date reply_date;
 	private String member_nName;
+	private String reply_dateSte;
 	
 	
 	public String getMember_nName() {
@@ -68,6 +69,16 @@ public class ReplyVo {
 
 	public void setReply_date(Date reply_date) {
 		this.reply_date = reply_date;
+	}
+	
+	
+
+	public String getReply_dateSte() {
+		return reply_dateSte;
+	}
+
+	public void setReply_dateSte(String reply_dateSte) {
+		this.reply_dateSte = reply_dateSte;
 	}
 
 	@Override
