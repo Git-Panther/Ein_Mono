@@ -7,6 +7,7 @@
 <%
 	PostVo post = (PostVo) request.getAttribute("post");
 	ArrayList<ReplyVo> reply = (ArrayList<ReplyVo>) request.getAttribute("reply");
+	MemberVo user = (MemberVo) session.getAttribute("LoginMember");
 %>
 <!DOCTYPE html>
 <html>
@@ -31,10 +32,11 @@
 }
 
 #btnDiv {
-	width: 90px;
+	width: 150px;
 	height: 40px;
 	margin-left: auto;
-	margin-right: 350px;
+	margin-right: auto;
+	margin-top:10px;
 }
 
 #titleDiv {
@@ -51,7 +53,7 @@
 
 #replyBtn {
 	width: auto;
-	height: 50px;
+	height: 35px;
 }
 #replyTable{
 	width: 1000px;
@@ -59,7 +61,7 @@
 	margin-left: auto;
 	margin-right: auto;
 	text-align:left;
-	background:tan;
+	background:white;
 }
 .deleteReply{
 	cursor:pointer;
@@ -77,6 +79,46 @@
 	}
 	function reportBtn(rCode){
 		location.href = "/mono/insertReport.do?reported=<%=post.getWriter_code()%>&reply_code="+rCode;
+	}
+	function deleteReply(rCode){
+		 /* var remove = $("div#replyTable").remove(); */
+		 $("#replyTable").html("");
+		var pCode = "<%=post.getPost_code()%>";
+		var userCode = "<%=user.getMemberCode()%>";
+		$.ajax({
+			url : "/mono/deleteReply.do",
+			type : "get",
+			data : { pCode : pCode, rCode : rCode},
+			success : function(data){
+				var str = "";
+				if(data.length > 0){
+					 for(i=0; i<data.length; i++){
+						 str += "<table id='replyTable'>";
+						 str += "<tr><th rowspan='2'>"+data[i].member_nName+"</th><td>"+data[i].reply_dateSte+"</td>";
+						 str += "<td><div style='float:right;'>";
+						 if(userCode != data[i].writer_code) {
+							 str += "<a href = '/mono/insertReport.do?reported="+data[i].writer_code+"&reply_code="+data[i].reply_code+"';>신고</a>";
+						 }
+						 if(userCode == data[i].writer_code) {
+							 str += "<input type='button' name='deleteReplyBtn' value='삭제' onclick='deleteReply(\"" + data[i].reply_code +"\");'/>";
+						 }
+						 str += "</div></td></tr>";
+						 str += "<tr><td colspan='3'>"+data[i].reply_content+"</td>";
+						 str += "</tr>";
+						 str += "</table>";
+						 str += "<div>";
+		             }			                
+				} else {			                
+		            str += "<table>";
+		            str += "<tr><th colspan='3'>등록 된 댓글이 없습니다.</th></tr>";
+		            str += "</table>";			                
+		        }
+				$("#replyDiv").html(str);
+				$("#contents").val("");
+			},error : function(data){
+				console.log(data);
+			}
+		});
 	}
 	
 	
@@ -104,16 +146,19 @@
 				<td><%=post.getViews_count()+1%></td>
 			</tr>
 			<tr>
-				<td colspan="6"><%=post.getContent()%></td>
+				<td colspan="6" style="height:300px;"><%=post.getContent()%></td>
 			</tr>
 		</table>
-		<%if(member != null && post.getWriter_code().equals(member.getMemberCode())) {%>
-		<button onclick="modifyPost();">수정</button>
-		<button onclick="removePost();">삭제</button>
-		<%} %>
-		<button onclick="reportPost();">신고</button>
+		<div id="btnDiv">
+			<%if(member != null && post.getWriter_code().equals(member.getMemberCode())) {%>
+			<button onclick="modifyPost();">수정</button>
+			<button onclick="removePost();">삭제</button>
+			<%} %>
+			<button onclick="reportPost();">신고</button>
+		</div>
 		<br> <br> <br>
 	</div>
+	<hr/>
 	<div id="replyDiv">
 		<table id="replyTable">
 			<%
@@ -121,8 +166,17 @@
 			%>
 			<tr>
 				<th rowspan="2"><%=reply.get(i).getMember_nName()%></th>
-				<td><%=reply.get(i).getReply_date()%></td>
-				<td><div><a href="/mono/insertReport.do?reported=<%=reply.get(i).getWriter_code()%>&reply_code=<%=reply.get(i).getReply_code()%>">신고</a></div></td>
+				<td><%=reply.get(i).getReply_dateSte()%></td>
+				<td>
+					<div style="float:right;">
+						<% if(! user.getMemberCode().equals(reply.get(i).getWriter_code())){ %>
+							<a href="/mono/insertReport.do?reported=<%=reply.get(i).getWriter_code()%>&reply_code=<%=reply.get(i).getReply_code()%>">신고</a>
+						<% } %>
+						<% if(user.getMemberCode().equals(reply.get(i).getWriter_code())){ %>
+							<input type="button" name="deleteReplyBtn" value="삭제" onclick="deleteReply('<%=reply.get(i).getReply_code()%>');"/>
+						<% } %>
+					</div>
+				</td>
 			</tr>
 			<tr>
 				<td colspan="3"><%=reply.get(i).getReply_content()%></td>
@@ -133,12 +187,14 @@
 		</table>
 
 	</div>
+	<hr/>
+	<br>
 	<%if(null != member){ %>
 	<div id="writeDiv">
-		댓글 쓰기<br>
-		<textarea rows="3" cols="120" id="contents"></textarea>
+		<!-- 댓글 쓰기<br> -->
+		<textarea rows="3" cols="135" id="contents" placeholder="댓글 내용을 입력해 주세요."></textarea>
 		<input type="hidden" value="<%=member.getMemberCode() %>" id="mCode">
-		<button id="replyBtn" Accesskey="13">댓글 작성</button>
+		<button id="replyBtn" Accesskey="13" style="float:right;">댓글 작성</button>
 	</div>
 	<%} %>
 	<br><br><br><br>
@@ -146,24 +202,32 @@
 	<script>
 	$(function(){		
 		$("#replyBtn").click(function(){
-			 var remove = $("div#replyTable").remove();
-			 $("#replyTable").html(remove);
+			 /* var remove = $("div#replyTable").remove(); */
+			 $("#replyTable").html("");
 			 var mCode = $("#mCode").val();
 			var pCode = "<%=post.getPost_code()%>";
 			var content = $("#contents").val();
+			var userCode = "<%=user.getMemberCode()%>";
 			$.ajax({
 				url : "/mono/insertReply.do",
 				type : "get",
 				data : { content : content , pCode : pCode, mCode : mCode},
 				success : function(data){
-					console.log(data.length);
 					var str = "";
 					if(data.length > 0){
 						 for(i=0; i<data.length; i++){
 							 str += "<table id='replyTable'>";
-							 str += "<tr><th rowspan='2'>"+data[i].member_nName+"</th><td>"+data[i].reply_date+"</td>";
-							 str += "<td><div><a href = '/mono/insertReport.do?reported="+data[i].writer_code+"&reply_code="+data[i].reply_code+"';>신고</a></div></td></tr>";
-							 str += "<tr><td colspan='3'>"+data[i].reply_content+"</td></tr>";
+							 str += "<tr><th rowspan='2'>"+data[i].member_nName+"</th><td>"+data[i].reply_dateSte+"</td>";
+							 str += "<td><div style='float:right;'>";
+							 if(userCode != data[i].writer_code) {
+								 str += "<a href = '/mono/insertReport.do?reported="+data[i].writer_code+"&reply_code="+data[i].reply_code+"';>신고</a>";
+							 }
+							 if(userCode == data[i].writer_code) {
+								 str += "<input type='button' name='deleteReplyBtn' value='삭제' onclick='deleteReply(\"" + data[i].reply_code +"\");'/>";
+							 }
+							 str += "</div></td></tr>";
+							 str += "<tr><td colspan='3'>"+data[i].reply_content+"</td>";
+							 str += "</tr>";
 							 str += "</table>";
 							 str += "<div>";
 			             }			                
