@@ -153,7 +153,7 @@ ul.sonarmenu a:hover:before, ul.sonarmenu a:hover:after{
 					<li><a href="/mono/selectMyRequestList.do?mCode=<%=member.getMemberCode()%>">인테리어 신청 내역</a></li>
 					<li><a href="/mono/myPostList.do?mCode=<%=member.getMemberCode()%>">내가 쓴글</a></li>
 					<li><a href="/mono/selectFBList.do?member_code=<%=member.getMemberCode()%>&fb_type=즐겨찾기">즐겨찾기 목록</a></li>
-					<li><a href="/mono/selectFBList.do?member_code=<%=member.getMemberCode()%>&fb_type=차단">차단 목록</a></li>
+					<%-- <li><a href="/mono/selectFBList.do?member_code=<%=member.getMemberCode()%>&fb_type=차단">차단 목록</a></li> --%>
 				</center>
 			<%}else{ %>
 				<center>

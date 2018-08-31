@@ -1,7 +1,8 @@
+<%@page import="ein.mono.favblock.model.vo.FBVo"%>
 <%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<% ArrayList<MemberVo> list = (ArrayList<MemberVo>) request.getAttribute("list"); %>   
+<% ArrayList<FBVo> list = (ArrayList<FBVo>) request.getAttribute("list"); %>   
 <!DOCTYPE html>
 <html>
 <head>
@@ -60,43 +61,6 @@
     	font-size:11px;
     }
     </style>
-    
-    <script>
-		$(function(){
-			$(".tableArea td").mouseenter(function(){
-				$(this).parent().css("background", "rgba(48, 49, 56,0.8);");
-				$(this).parent().css("color", "white");
-				$(this).parent().css("cursor", "pointer");
-			}).mouseout(function(){
-				$(this).parent().css("background", "white");
-				$(this).parent().css("color", "black");
-			}).click(function(){ // 클릭하면 해당 업체 상세정보 페이지로 이동하게
-				//var keywordNo = $(this).parent().children().eq(0).text();
-				
-				//location.href = "/mono/selectKeywordList.do?requestPage=adminPageUpdateKeyword&keywordNo=" + keywordNo;
-//				location.href = "/mwp/selectBoard.do?boardNo=" + boardNo;
-				<%-- location.href = "/mwp/selectBoard.do?boardNo=" + boardNo + "&currentPage=<%=currentPage%>"; --%>
-			});
-			
-			$(".firstLastPageBtn, #deleteFavBtn").mouseenter(function(){
-				$(this).css("border", "1px solid black");
-				$(this).css("background", "white");
-				$(this).css("color", "black");
-				$(this).css("cursor", "pointer");
-			}).mouseout(function(){
-				$(this).css("border", "1px solid white");
-				$(this).css("background", "rgba(48, 49, 56,0.8);");
-				$(this).css("color", "white");
-			});
-			$(".pageBtn").mouseenter(function(){
-				$(this).css("cursor", "pointer");
-			});
-		});	
-		
-		function deleteFav(member_code, target_code){
-			location.href = "/mono/deleteFB.do?member_code=" + member_code + "&target_code=" + target_code + "&fb_type=즐겨찾기";
-		}
-	</script>
 </head>
 
 <body>
@@ -110,7 +74,6 @@
 		    </nav>
 		    <section id="jiSec1" class="jiCenter">
 		    	<div class="tableArea">
-		    		<%-- <% if(null != member && null != list) { %> --%>
 					<table align="center" style="width:800px;">
 						<tr>
 							<th width="100">분류</th>
@@ -122,12 +85,12 @@
 								<td colspan="3">즐겨찾기된 업체가 없습니다.</td>
 							</tr>
 							<% } else { %>
-							<% for(MemberVo m : list) { %>
+							<% for(FBVo m : list) { %>
 								<tr>
 									<td>즐겨찾기</td>
-									<td>	<%= m.getMemberName() %></td>
+									<td>	<%= m.getTargetId() %></td>
 									<td>
-										<button id="deleteFavBtn" onclick="deleteFav('<%=member.getMemberCode()%>', '<%=m.getMemberCode()%>');">해제</button>
+										<button id="deleteFavBtn" onclick="deleteFav('<%=member.getMemberCode()%>', '<%=m.getTargetCode()%>');">해제</button>
 									</td>
 								</tr>
 							<% } %>	
@@ -155,5 +118,70 @@
 	<footer>
 		<%@ include file="../common/footer.jsp" %>
 	</footer>
+	<script>
+		$(function(){
+			$(".tableArea td").mouseenter(function(){
+				$(this).parent().css("background", "rgba(48, 49, 56,0.8)");
+				$(this).parent().css("color", "white");
+				$(this).parent().css("cursor", "pointer");
+			}).mouseout(function(){
+				$(this).parent().css("background", "white");
+				$(this).parent().css("color", "black");
+			}).click(function(){ // 클릭하면 해당 업체 상세정보 페이지로 이동하게
+				//var keywordNo = $(this).parent().children().eq(0).text();
+				
+				//location.href = "/mono/selectKeywordList.do?requestPage=adminPageUpdateKeyword&keywordNo=" + keywordNo;
+//				location.href = "/mwp/selectBoard.do?boardNo=" + boardNo;
+				<%-- location.href = "/mwp/selectBoard.do?boardNo=" + boardNo + "&currentPage=<%=currentPage%>"; --%>
+			});
+			
+			$(".firstLastPageBtn, #deleteFavBtn").mouseenter(function(){
+				$(this).css("border", "1px solid black");
+				$(this).css("background", "white");
+				$(this).css("color", "black");
+				$(this).css("cursor", "pointer");
+			}).mouseout(function(){
+				$(this).css("border", "1px solid white");
+				$(this).css("background", "rgba(48, 49, 56,0.8)");
+				$(this).css("color", "white");
+			});
+			$(".pageBtn").mouseenter(function(){
+				$(this).css("cursor", "pointer");
+			});
+		});	
+		
+		function deleteFav(member_code, target_code){
+			/* location.href = "/mono/deleteFB.do?member_code=" + member_code + "&target_code=" + target_code + "&fb_type=즐겨찾기"; */
+			
+			var str = "";
+			$.ajax({
+				url : "/mono/deleteFB.do",
+				type : "get",
+				data : {memberCode : member_code , partnerCode : target_code , fbType : '즐겨찾기'},
+				success : function(data){
+					str += "<table align='center' style='width:800px;'>";
+					str += "<tr><th width='100'>분류</th> <th width='600'>이름(업체명)</th><th width='100'></th></tr>";
+					if(data.length > 0){
+						for(i=0; i<data.length; i++){
+							str += "<tr>";
+							str += "<td>즐겨찾기</td>"
+								+ "<td>" + data[i].targetId +"</td>"
+								+ "<td>" + "<button id=" + '"' + deleteFavBtn + '"' 
+								+ "onclick=" + '"' + "deleteFav('<%=member.getMemberCode()%>'" + ", "
+								+ "'" + data[i].targetCode + "'" + ");" + '"' + ">해제</button></td>";  
+							str += "</tr>";
+			             }
+					}else{
+						str += "<td colspan='3'>즐겨찾기된 업체가 없습니다.</td>"
+					}
+					str += "</table>";
+					
+					$(".tableArea").html(str);
+				},error : function(e){
+					console.log(e);
+				}
+			});
+		}
+	</script>
 </body>
 </html>

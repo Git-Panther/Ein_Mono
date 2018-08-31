@@ -167,7 +167,7 @@
 							 str += "</table>";
 							 str += "<div>";
 			             }			                
-					} else {			                
+					} else {
 			            str += "<table>";
 			            str += "<tr><th colspan='3'>등록 된 댓글이 없습니다.</th></tr>";
 			            str += "</table>";			                

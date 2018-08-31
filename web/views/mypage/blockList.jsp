@@ -1,7 +1,8 @@
+<%@page import="ein.mono.favblock.model.vo.FBVo"%>
 <%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<% ArrayList<MemberVo> list = (ArrayList<MemberVo>) request.getAttribute("list"); %>   
+<% ArrayList<FBVo> list = (ArrayList<FBVo>) request.getAttribute("list"); %>   
 <!DOCTYPE html>
 <html>
 <head>
@@ -61,27 +62,7 @@
     }
     </style>
     
-    <script>
-		$(function(){
-			$(".firstLastPageBtn, #deleteBlockBtn").mouseenter(function(){
-				$(this).css("border", "1px solid black");
-				$(this).css("background", "white");
-				$(this).css("color", "black");
-				$(this).css("cursor", "pointer");
-			}).mouseout(function(){
-				$(this).css("border", "1px solid white");
-				$(this).css("background", "rgba(48, 49, 56,0.8);");
-				$(this).css("color", "white");
-			});
-			$(".pageBtn").mouseenter(function(){
-				$(this).css("cursor", "pointer");
-			});
-		});	
-		
-		function deleteBlock(member_code, target_code){
-			location.href = "/mono/deleteFB.do?member_code=" + member_code + "&target_code=" + target_code + "&fb_type=차단";
-		}
-	</script>
+    
 </head>
 
 <body>
@@ -107,12 +88,12 @@
 								<td colspan="3">차단된 업체가 없습니다.</td>
 							</tr>
 							<% } else { %>
-							<% for(MemberVo m : list) { %>
+							<% for(FBVo m : list) { %>
 								<tr>
 									<td>차단</td>
-									<td>	<%= m.getMemberName() %></td>
+									<td>	<%= m.getTargetId() %></td>
 									<td>
-										<button id="deleteBlockBtn" onclick="deleteBlock('<%=member.getMemberCode()%>', '<%=m.getMemberCode()%>');">해제</button>
+										<button id="deleteBlockBtn" onclick="deleteBlock('<%=member.getMemberCode()%>', '<%=m.getTargetCode()%>');">해제</button>
 									</td>
 								</tr>
 							<% } %>	
@@ -140,5 +121,58 @@
 	<footer>
 		<%@ include file="../common/footer.jsp" %>
 	</footer>
+	
+	
+	
+	
+	<script>
+		$(function(){
+			$(".firstLastPageBtn, #deleteBlockBtn").mouseenter(function(){
+				$(this).css("border", "1px solid black");
+				$(this).css("background", "white");
+				$(this).css("color", "black");
+				$(this).css("cursor", "pointer");
+			}).mouseout(function(){
+				$(this).css("border", "1px solid white");
+				$(this).css("background", "rgba(48, 49, 56,0.8);");
+				$(this).css("color", "white");
+			});
+			$(".pageBtn").mouseenter(function(){
+				$(this).css("cursor", "pointer");
+			});
+		});	
+		
+		function deleteBlock(member_code, target_code){
+			/* location.href = "/mono/deleteFB2.do?member_code=" + member_code + "&target_code=" + target_code + "&fb_type=차단"; */
+			var str;
+			$.ajax({
+				url : "/mono/deleteFB.do",
+				type : "get",
+				data : {memberCode : member_code , partnerCode : target_code , fbType : '차단'},
+				success : function(data){
+					str += "<table align='center' style='width:800px;'>";
+					str += "<tr><th width='100'>분류</th> <th width='600'>이름(업체명)</th><th width='100'></th></tr>";
+					if(data.length > 0){
+						for(i=0; i<data.length; i++){
+							str += "<tr>";
+							str += "<td>즐겨찾기</td>"
+								+ "<td>" + data[i].targetId +"</td>"
+								+ "<td>" + "<button id=" + '"' + deleteFavBtn + '"' 
+								+ "onclick=" + '"' + "deleteBlock('<%=member.getMemberCode()%>'" + ", "
+								+ "'" + data[i].targetCode + "'" + ");" + '"' + ">해제</button></td>";  
+							str += "</tr>";
+			             }
+					}else{
+						str += "<td colspan='3'>즐겨찾기된 업체가 없습니다.</td>"
+					}
+					str += "</table>";
+					
+					$(".tableArea").html(str);
+				},error : function(e){
+					console.log(e);
+				}
+			});
+		}
+	</script>
 </body>
 </html>
