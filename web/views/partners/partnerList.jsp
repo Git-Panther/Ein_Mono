@@ -52,6 +52,11 @@
 					<tr>	
 						<td colspan="4">
 							<a href="/mono/selectPartner.do?partnerCode=<%=ptnPreview.getPartnerCode()%>"><img class="ptnPreviewPhoto" alt="none" src="/mono/upload/partners/<%=ptnPreview.getPtnPhotos()%>"></a>				
+							<!--
+							 	img 꼭 로고로 바꿔야겠다면 
+							<a href="/mono/selectPartner.do?partnerCode=<%=ptnPreview.getPartnerCode()%>"><img class="ptnPreviewPhoto" alt="none" src="/mono/upload/partners/<%=ptnPreview.getPartnerLogo()%>"></a>				
+							위 코드를 바로 위 a 태그 대신에 넣어주면 해결
+							 -->
 						</td>
 					</tr>
 					<tr>
@@ -108,6 +113,11 @@
 						<tr>	
 							<td colspan="4">
 								<a href="/mono/selectPartner.do?partnerCode=<%=ptnPreview.getPartnerCode()%>"><img class="ptnPreviewPhoto" alt="none" src="/mono/upload/partners/<%=ptnPreview.getPtnPhotos()%>"></a>	
+								<!--
+							 	img 꼭 로고로 바꿔야겠다면 
+								<a href="/mono/selectPartner.do?partnerCode=<%=ptnPreview.getPartnerCode()%>"><img class="ptnPreviewPhoto" alt="none" src="/mono/upload/partners/<%=ptnPreview.getPartnerLogo()%>"></a>				
+								위 코드를 바로 위 a 태그 대신에 넣어주면 해결
+								 -->
 							</td>
 						</tr>
 						<tr>

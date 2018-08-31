@@ -68,6 +68,7 @@ public class PartnersDao {
 				temp.setMetascore(rs.getDouble("METASCORE"));
 				temp.setPtnPhotos(rs.getString("PTN_MAIN_PHOTO"));
 				temp.setPartnerStyles(rs.getString("PTN_STYLES"));
+				temp.setPartnerLogo(rs.getString("PTN_LOGO"));
 				list.add(temp);
 			}
 		} catch (SQLException e) {
@@ -119,6 +120,7 @@ public class PartnersDao {
 				temp.setMetascore(rs.getDouble("METASCORE"));
 				temp.setPtnPhotos(rs.getString("PTN_MAIN_PHOTO"));
 				temp.setPartnerStyles(rs.getString("PTN_STYLES"));
+				temp.setPartnerLogo(rs.getString("PTN_LOGO"));
 				list.add(temp);
 			}
 		} catch (SQLException e) {
@@ -164,6 +166,7 @@ public class PartnersDao {
 				temp.setMetascore(rs.getDouble("METASCORE"));
 				temp.setPtnPhotos(rs.getString("PTN_MAIN_PHOTO"));
 				temp.setPartnerStyles(rs.getString("PTN_STYLES"));
+				temp.setPartnerLogo(rs.getString("PTN_LOGO"));
 				list.add(temp);
 			}
 		} catch (SQLException e) {
