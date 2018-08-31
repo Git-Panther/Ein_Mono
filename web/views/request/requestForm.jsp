@@ -330,6 +330,7 @@ $(function() {
          changeMonth: true, 
          changeYear: true,
          dateFormat:'yymmdd',
+         startDate : "today",
          dayNames: ['월요일', '화요일', '수요일', '목요일', '금요일', '토요일', '일요일'],
          dayNamesMin: ['월', '화', '수', '목', '금', '토', '일'], 
          monthNamesShort: ['1','2','3','4','5','6','7','8','9','10','11','12'],
@@ -527,7 +528,7 @@ function auction(){
 <div class="price_outer">
 	<label class="title">6. 희망 견적가</label>
 		<select name="price" class="price">
-			<option value='50만원 이하'>100만원 이하</option>
+			<option value='50만원 이하'>50만원 이하</option>
 			<option value="50만원 이상~100만원 이하">50만원 이상~100만원 이하</option>
 			<option value="100만원 이상~200만원 이하">100만원 이상~200만원 이하</option>
 			<option value='200만원 이상'>200만원 이상</option>
