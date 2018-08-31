@@ -67,7 +67,7 @@
 				$(this).css("color", "black");
 				$(this).css("cursor", "pointer");
 				$("#reqBtn").css("border", "1px solid white");
-				$("#reqBtn").css("background", "rgba(48, 49, 56,0.8);");
+				$("#reqBtn").css("background", "rgba(48, 49, 56,0.8)");
 				$("#reqBtn").css("color", "white");
 			});
 			$("#reqBtn").click(function(){
@@ -76,9 +76,10 @@
 				$(this).css("color", "black");
 				$(this).css("cursor", "pointer");
 				$("#aucBtn").css("border", "1px solid white");
-				$("#aucBtn").css("background", "rgba(48, 49, 56,0.8);");
+				$("#aucBtn").css("background", "rgba(48, 49, 56,0.8)");
 				$("#aucBtn").css("color", "white");
 			});
+			
 			$(".pageBtn").mouseenter(function(){
 				$(this).css("cursor", "pointer");
 			});
