@@ -73,6 +73,71 @@
 	cursor:pointer;
 }
 </style>
+<script>
+	function modifyPost(){
+		location.href = "/mono/modifyPostForm.do?pCode=<%=post.getPost_code()%>";
+	}
+	function removePost(){
+		location.href = "/mono/removePost.do?pCode=<%=post.getPost_code()%>&pType=<%=post.getPost_type()%>";
+	}
+	function reportPost(){
+		if(<%=null != member%>){
+			location.href = "/mono/insertReport.do?reportedcode=<%=post.getWriter_code()%>&postcode=<%=post.getPost_code()%>";
+		}else{
+			alert("로그인 후에 신고할 수 있습니다!");	
+		}
+	}
+	function reportReply(writerCode, replyCode){
+		if(<%=null != member%>){
+			location.href = "/mono/insertReport.do?reportedcode="+writerCode+"&replycode="+replyCode;
+		}else{
+			alert("로그인 후에 신고할 수 있습니다!");	
+		}
+	}
+	function deleteReply(rCode){
+		 /* var remove = $("div#replyTable").remove(); */
+		 $("#replyTable").html("");
+		var pCode = "<%=post.getPost_code()%>";
+		var userCode = "<%= (null != user ? user.getMemberCode() : null) %>";
+		$.ajax({
+			url : "/mono/deleteReply.do",
+			type : "get",
+			data : { pCode : pCode, rCode : rCode},
+			success : function(data){
+				var str = "";
+				if(data.length > 0){
+					 for(i=0; i<data.length; i++){
+						 str += "<table id='replyTable'>";
+						 str += "<tr><th rowspan='2'>"+data[i].member_nName+"</th><td>"+data[i].reply_dateSte+"</td>";
+						 str += "<td><div style='float:right;'>";
+						 if(data[i].writer_code != '<%=memberCode%>'){
+							str +=  "<a href = 'javascript:reportReply("
+								+ '"' + data[i].writer_code + '"'
+								+ ', "' + data[i].reply_code+ '"'
+								+ ");'>신고</a>";
+						}
+						 if(userCode == data[i].writer_code) {
+							 str += "<input type='button' name='deleteReplyBtn' value='삭제' onclick='deleteReply(\"" + data[i].reply_code +"\");'/>";
+						 }
+						 str += "</div></td></tr>";
+						 str += "<tr><td colspan='3'>"+data[i].reply_content+"</td>";
+						 str += "</tr>";
+						 str += "</table>";
+						 str += "<div>";
+		             }			                
+				} else {			                
+		            str += "<table>";
+		            str += "<tr><th colspan='3'>등록 된 댓글이 없습니다.</th></tr>";
+		            str += "</table>";			                
+		        }
+				$("#replyDiv").html(str);
+				$("#contents").val("");
+			},error : function(data){
+				console.log(data);
+			}
+		});
+	}
+</script>
 </head>
 <body>
 	<br>
@@ -124,7 +189,7 @@
 					<%if(  !( (null != member) && (reply.get(i).getWriter_code().equals( member.getMemberCode() ) ) )  ){%>
 						<a href='javascript:reportReply("<%=reply.get(i).getWriter_code()%>", "<%=reply.get(i).getReply_code()%>");'>신고</a>
 					<%}%>
-					<% if(user.getMemberCode().equals(reply.get(i).getWriter_code())){ %>
+					<% if(null != user && user.getMemberCode().equals(reply.get(i).getWriter_code())){ %>
 						<input type="button" name="deleteReplyBtn" value="삭제" onclick="deleteReply('<%=reply.get(i).getReply_code()%>');"/>
 					<%}%>
 					</div>
@@ -151,71 +216,6 @@
 	<%} %>
 	<br><br><br><br>
 	<script>
-		function modifyPost(){
-			location.href = "/mono/modifyPostForm.do?pCode=<%=post.getPost_code()%>";
-		}
-		function removePost(){
-			location.href = "/mono/removePost.do?pCode=<%=post.getPost_code()%>&pType=<%=post.getPost_type()%>";
-		}
-		function reportPost(){
-			if(<%=null != member%>){
-				location.href = "/mono/insertReport.do?reportedcode=<%=post.getWriter_code()%>&postcode=<%=post.getPost_code()%>";
-			}else{
-				alert("로그인 후에 신고할 수 있습니다!");	
-			}
-		}
-		function reportReply(writerCode, replyCode){
-			if(<%=null != member%>){
-				location.href = "/mono/insertReport.do?reportedcode="+writerCode+"&replycode="+replyCode;
-			}else{
-				alert("로그인 후에 신고할 수 있습니다!");	
-			}
-		}
-		function deleteReply(rCode){
-			 /* var remove = $("div#replyTable").remove(); */
-			 $("#replyTable").html("");
-			var pCode = "<%=post.getPost_code()%>";
-			var userCode = "<%=user.getMemberCode()%>";
-			$.ajax({
-				url : "/mono/deleteReply.do",
-				type : "get",
-				data : { pCode : pCode, rCode : rCode},
-				success : function(data){
-					var str = "";
-					if(data.length > 0){
-						 for(i=0; i<data.length; i++){
-							 str += "<table id='replyTable'>";
-							 str += "<tr><th rowspan='2'>"+data[i].member_nName+"</th><td>"+data[i].reply_dateSte+"</td>";
-							 str += "<td><div style='float:right;'>";
-							 if(data[i].writer_code != '<%=memberCode%>'){
-								str +=  "<a href = 'javascript:reportReply("
-									+ '"' + data[i].writer_code + '"'
-									+ ', "' + data[i].reply_code+ '"'
-									+ ");'>신고</a>";
-							}
-							 if(userCode == data[i].writer_code) {
-								 str += "<input type='button' name='deleteReplyBtn' value='삭제' onclick='deleteReply(\"" + data[i].reply_code +"\");'/>";
-							 }
-							 str += "</div></td></tr>";
-							 str += "<tr><td colspan='3'>"+data[i].reply_content+"</td>";
-							 str += "</tr>";
-							 str += "</table>";
-							 str += "<div>";
-			             }			                
-					} else {			                
-			            str += "<table>";
-			            str += "<tr><th colspan='3'>등록 된 댓글이 없습니다.</th></tr>";
-			            str += "</table>";			                
-			        }
-					$("#replyDiv").html(str);
-					$("#contents").val("");
-				},error : function(data){
-					console.log(data);
-				}
-			});
-		}
-	</script>
-	<script>
 	$(function(){
 		//console.log(<%=postIsMine%>);		
 		$("#replyBtn").click(function(){
@@ -224,7 +224,7 @@
 			 var mCode = $("#mCode").val();
 			var pCode = "<%=post.getPost_code()%>";
 			var content = $("#contents").val();
-			var userCode = "<%=user.getMemberCode()%>";
+			var userCode = "<%=null != user ? user.getMemberCode() : null%>";
 			$.ajax({
 				url : "/mono/insertReply.do",
 				type : "get",
