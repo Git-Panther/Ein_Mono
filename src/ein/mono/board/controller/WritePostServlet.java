@@ -3,7 +3,6 @@ package ein.mono.board.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -37,6 +36,7 @@ public class WritePostServlet extends HttpServlet {
 		String content = request.getParameter("sky");
 		String mCode = request.getParameter("mCode");
 		String pType = request.getParameter("pType");
+		//String ptnCode = request.getParameter("partnerCode");
 		
 		if(5 > title.length() || 20 > content.length()){
 			String str = title.length() < 5 ? "글 제목" : "내용";
@@ -53,14 +53,19 @@ public class WritePostServlet extends HttpServlet {
 			p.setTitle(title);
 			p.setContent(content);
 			p.setWriter_code(mCode);
+			System.out.println(mCode);
 			p.setPost_type(pType);
 			
 			int result = new PostService().insertPost(p);
 			
 			if(0 < result){
-				response.sendRedirect("/mono/selectPostList.do?posttype="+pType+"&currentPage=1");		
+				if(!pType.equals("QNA")) response.sendRedirect("/mono/selectPostList.do?posttype="+pType+"&currentPage=1");	
+				else {
+					//response.sendRedirect("/mono/selectQnAList.do?partnerCode="+ptnCode);	
+				}
 			}else{
-				System.out.println("error");
+				request.setAttribute("msg", "게시글 작성 실패!");
+				request.getRequestDispatcher("/views/common/errorPage.jsp").forward(request, response);
 			}
 		}
 	}

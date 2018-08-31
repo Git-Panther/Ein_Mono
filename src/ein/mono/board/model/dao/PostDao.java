@@ -8,7 +8,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Properties;
@@ -483,9 +482,9 @@ public class PostDao {
 		int result = 0;
 		PreparedStatement pstmt = null;
 		String query = "";
-		
+		//System.out.println(p.toString());
 		String pType = p.getPost_type();
-		System.out.println(pType);
+		//System.out.println(pType);
 		String mCode = p.getWriter_code();
 		String title = p.getTitle();
 		String content = p.getContent();
@@ -523,9 +522,8 @@ public class PostDao {
 			pstmt.setString(2, mCode);
 			pstmt.setString(3, title);
 			pstmt.setString(4, content);
-			
+			//System.out.println(pstmt.toString());
 			result = pstmt.executeUpdate();
-			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally{

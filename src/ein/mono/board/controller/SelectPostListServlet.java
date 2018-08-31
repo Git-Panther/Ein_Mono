@@ -8,12 +8,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
- 
-import ein.mono.board.model.dao.PostDao;
+
 import ein.mono.board.model.service.PostService;
-import ein.mono.board.model.service.ReplyService;
 import ein.mono.board.model.vo.PostVo;
-import ein.mono.board.model.vo.ReplyVo;
 import ein.mono.common.PageInfo;
 
 @WebServlet("/selectPostList.do")
@@ -47,7 +44,7 @@ public class SelectPostListServlet extends HttpServlet {
 		
 		//총 길이
 		int listCount = new PostService().selectPostTotalCount(post_type);
-		System.out.println("listCount : " + listCount);
+		//System.out.println("listCount : " + listCount);
 		//134 -> 14
 		maxPage = (int)((double)listCount / limit + 0.9);
 		
@@ -83,7 +80,7 @@ public class SelectPostListServlet extends HttpServlet {
 				request.setAttribute("pi", pi);
 				
 			}else{
-				url = "views/post/errorPage.jsp";
+				url = "views/common/errorPage.jsp";
 				request.setAttribute("list", postList);
 			}
 		}else if(post_type.equals("FRE")){
@@ -94,8 +91,8 @@ public class SelectPostListServlet extends HttpServlet {
 				request.setAttribute("pi", pi);
 				
 			}else{
-				url = "views/post/errorPage.jsp";
-				request.setAttribute("list", postList);
+				url = "views/common/errorPage.jsp";
+				request.setAttribute("msg", "프리 리스트 조회 실패");
 			}
 		}else if(post_type.equals("REV")){
 			if(0 <= postList.size()){
@@ -105,8 +102,8 @@ public class SelectPostListServlet extends HttpServlet {
 				request.setAttribute("pi", pi);
 				
 			}else{
-				url = "views/post/errorPage.jsp";
-				request.setAttribute("list", postList);
+				url = "views/common/errorPage.jsp";
+				request.setAttribute("msg", "리뷰 리스트 조회 실패");
 			}
 		}else if(post_type.equals("MAR")){
 			if(0 <= postList.size()){
@@ -116,8 +113,8 @@ public class SelectPostListServlet extends HttpServlet {
 				request.setAttribute("pi", pi);
 				
 			}else{
-				url = "views/post/errorPage.jsp";
-				request.setAttribute("list", postList);
+				url = "views/common/errorPage.jsp";
+				request.setAttribute("msg", "마켓 리스트 조회 실패");
 			}
 			
 		}else if(post_type.equals("REV")){
@@ -130,8 +127,8 @@ public class SelectPostListServlet extends HttpServlet {
 			
 		}else {
 			// �뿉�윭 �럹�씠吏�濡� �씠�룞
-			url = "views/post/errorPage.jsp";
-			request.setAttribute("list", postList);
+			url = "views/common/errorPage.jsp";
+			request.setAttribute("msg", "알 수 없는 리스트 조회 실패");
 		}
 		request.getRequestDispatcher(url).forward(request, response);
 	}

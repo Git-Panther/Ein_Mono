@@ -439,7 +439,7 @@ public class MemberDao {
 		String query = "";
 		MemberVo findcode = null;
 		
-		query = "SELECT MEMBER_CODE, LICENCE FROM MEMBER WHERE MEMBER_ID = ?";
+		query = "SELECT MEMBER_CODE, MEMBER_NAME, MEMBER_NNAME, MEMBER_TEL, LICENCE FROM MEMBER WHERE MEMBER_ID = ?";
 		
 		try {
 			pstmt = con.prepareStatement(query);
@@ -449,7 +449,10 @@ public class MemberDao {
 			while(rs.next()) {
 				findcode = new MemberVo();
 				findcode.setMemberCode(rs.getString("MEMBER_CODE"));
+				findcode.setMemberName(rs.getString("MEMBER_NAME"));
+				findcode.setMemberNname(rs.getString("MEMBER_NNAME"));
 				findcode.setLicence(rs.getString("LICENCE"));
+				findcode.setMemberTel(rs.getString("MEMBER_TEL"));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -468,12 +471,14 @@ public class MemberDao {
 		PreparedStatement pstmt = null;
 		String query = "";
 		
-		query = "INSERT INTO PARTNER VALUES(?,'유지상',DEFAULT,?,NULL,'D','평택','모던','NULL',NULL,NULL,NULL,'d',NULL,NULL)";
+		query = "INSERT INTO PARTNER VALUES(?,?,DEFAULT,?,NULL,'-','-','-',NULL,NULL,NULL,NULL,?,NULL,NULL)";
 		
 		try {
 			pstmt = con.prepareStatement(query);
 			pstmt.setString(1, findcode.getMemberCode());
-			pstmt.setString(2, findcode.getLicence());
+			pstmt.setString(2, findcode.getMemberName());
+			pstmt.setString(3, findcode.getLicence());
+			pstmt.setString(4, "문의♤" + findcode.getMemberTel());
 			
 			ptnResult = pstmt.executeUpdate();
 		} catch (SQLException e) {

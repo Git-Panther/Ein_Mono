@@ -13,12 +13,13 @@ public class MemberService {
 		
 		Connection con = JDBCTemplate.getConnection();
 		int result = new MemberDao().joinMember(con, member, mRank);
+		int ptnResult = 0;
 		if(0 < result) {
 			JDBCTemplate.commit(con);
 			if(mRank.equals("2")) {
 				MemberVo findcode = new MemberDao().findcode(con, member);
-				
-				int ptnResult = new MemberDao().insertPtn(con, findcode);
+				//System.out.println(findcode);
+				ptnResult = new MemberDao().insertPtn(con, findcode);
 				
 				if(0<ptnResult) {
 					JDBCTemplate.commit(con);
@@ -32,7 +33,17 @@ public class MemberService {
 		
 		JDBCTemplate.close(con);
 	
-		return result;
+		if(mRank.equals("2")) {
+			if(0 < result && 0 < ptnResult)
+				return 1;
+			else
+				return 0;
+		}else {
+			if(0 < result)
+				return 1;
+			else
+				return 0;
+		}
 }
 	public MemberVo loginMember(String id ) {
 		

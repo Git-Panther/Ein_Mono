@@ -4,6 +4,7 @@
 <%
 	String pType = request.getParameter("pType");
 	String mCode = request.getParameter("mCode");
+	String ptnCode = request.getParameter("partnerCode");
 %>
 <!DOCTYPE html>
 <html>
@@ -51,10 +52,19 @@
 	<br>
 	<h1 align="center">게시글 쓰기</h1>
 	<div class="outer">
-		<form method="post" action="/mono/writePost.do">
+		<form method="post" action=
+		<%if(!"QNA".equals(pType)){%>
+			"/mono/writePost.do"
+		<%}else{%>
+			"/mono/insertQnA.do"
+		<%}%>
+		>
 			<div id="titleDiv">글 제목 <input type="text" name="title" size="95"></div>
+			<%if(null != ptnCode){%>
+			<input type="hidden" name="partnerCode" value="<%=ptnCode%>">
+			<%}%>
 			<input type="hidden" name="pType" value="<%=pType%>">
-			<input type="hidden" name="mCode" value="<%=mCode%>">
+			<input type="hidden" name="mCode" value="<%=member.getMemberCode()%>">
 			<input type="hidden" name="sky">
 			<div id="summernote"></div>
 			<button id="submitBtn">확인</button>

@@ -65,7 +65,7 @@ public class InsertReportServlet extends HttpServlet {
 		
 		if(0<result) {
 			request.setAttribute("msg", "신고가 완료되었습니다");
-			view = request.getRequestDispatcher("views/common/successPage.jsp");
+			view = request.getRequestDispatcher("/index.jsp");
 		}else {
 			
 			/*request.setAttribute("msg", "신고하기가 정상적으로 이루어지지않음");

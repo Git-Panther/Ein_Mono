@@ -37,6 +37,7 @@
 	height:300px;
 	margin-left:auto;
 	margin-right:auto;
+	margin-bottom:100px;
  }
  .tableArea th{
     	border-top:1px solid black;
@@ -55,6 +56,7 @@
 	width:650px;
 	margin-left:auto;
 	margin-right:auto;
+	margin-top:100px;
  }
  	.auction{
 		margin-top:40px;

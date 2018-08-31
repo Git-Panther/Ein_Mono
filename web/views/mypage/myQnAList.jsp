@@ -101,7 +101,7 @@
 							<%for (int i = 0; i < list.size(); i++) {%>
 							<tr>
 								<td><%=i + 1%></td>
-								<td><a href="/mono/qnaDetail.do?code=<%=list.get(i).getPost_code()%>"><%=list.get(i).getTitle()%></a></td>
+								<td><a href="/mono/detailPost.do?pCode=<%=list.get(i).getPost_code()%>&partnerCode=<%=member.getMemberCode()%>"><%=list.get(i).getTitle()%></a></td>
 								<td><%=list.get(i).getWriter_nickname()%></td>
 								<td><%=list.get(i).getWritten_date() %>
 								<td><%=list.get(i).getViews_count() %></td>

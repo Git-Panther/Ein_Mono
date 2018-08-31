@@ -3,7 +3,6 @@ package ein.mono.board.model.service;
 import java.sql.Connection;
 import java.util.ArrayList;
 
-
 import ein.mono.board.model.dao.PostDao;
 import ein.mono.board.model.vo.PostVo;
 import ein.mono.board.model.vo.ReplyVo;
@@ -32,8 +31,13 @@ public class PostService {
 
 	public int insertPost(PostVo post) {
 		Connection con = JDBCTemplate.getConnection();
-		
-		int result = new PostDao().insertPost(con, post);
+		int result = 0;
+
+		if(post.getPost_type().equals("QNA")) {
+			
+		}else {
+			result = new PostDao().insertPost(con, post);
+		}
 		
 		if(0 < result) {
 			JDBCTemplate.commit(con);
@@ -236,7 +240,7 @@ private PostDao pd = new PostDao();
 	public ArrayList<PostVo> selectPostList(String post_type){
 		Connection con = JDBCTemplate.getConnection();
 		
-		ArrayList<PostVo> list = new PostDao().selectPostList(con, post_type);
+		ArrayList<PostVo> list = pd.selectPostList(con, post_type);
 		
 		JDBCTemplate.close(con);
 		
