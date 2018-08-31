@@ -49,14 +49,14 @@ public class ReplyDao {
 				String rCode = rs.getString("Reply_code");
 				String rContent = rs.getString("reply_content");
 				String mCode = rs.getString("member_code");
-				Date rDate = rs.getDate("reply_Date");
+				String rDate = rs.getString("reply_Date");
 				String nName = rs.getString("member_nname");
 				temp = new ReplyVo();
 				temp.setReply_code(rCode);
 				temp.setPost_code(post_code);
 				temp.setWriter_code(mCode);
 				temp.setReply_content(rContent);
-				temp.setReply_date(rDate);
+				temp.setReply_dateSte(rDate);
 				temp.setMember_nName(nName);
 				
 				

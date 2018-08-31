@@ -180,4 +180,41 @@ public class FBDao {
 		
 		return result;
 	}
+	
+	public ArrayList<FBVo> selectFBList2(Connection con,String mCode,String fb_type){
+		ArrayList<FBVo> list = new ArrayList<FBVo>();
+		ResultSet rs = null;
+		PreparedStatement pstmt = null;
+		String query = "SELECT FB_TYPE , TARGET_CODE,M1.MEMBER_NAME AS MYID,M2.MEMBER_NAME AS TARGETID "
+				+"FROM FAVOR_BLOCK F "
+				+"JOIN MEMBER M1 ON(F.USER_CODE = M1.MEMBER_CODE) "
+				+"JOIN MEMBER M2 ON(F.USER_CODE = M2.MEMBER_CODE) "
+				+"WHERE F.USER_CODE = ? AND F.FB_TYPE=? ";
+						
+		try {
+			pstmt = con.prepareStatement(query);
+			
+			pstmt.setString(1, mCode);
+			pstmt.setString(2, fb_type);
+			
+			rs = pstmt.executeQuery();
+			FBVo temp = null;
+			while(rs.next()) {
+				temp = new FBVo();
+				temp.setTargetCode(rs.getString("TARGET_CODE"));
+				temp.setFbType(rs.getString("FB_TYPE"));
+				temp.setMyId(rs.getString("MYID"));
+				temp.setTargetId(rs.getString("TARGETID"));
+				
+				list.add(temp);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rs);
+			JDBCTemplate.close(pstmt);
+		}
+		
+		return list;
+	}
 }

@@ -57,6 +57,7 @@ public class SelectRequestListServlet extends HttpServlet { // 고객, 업체가
 		PageInfo pi = new PageInfo(currentPage, limit, maxPage, startPage, endPage, listCount);
 		
 		ArrayList<RequestVo> list = rqs.selectRequestListPage(currentPage, limit);
+		System.out.println("list : " + list);
 		
 		String url="";
 		if(null != list){

@@ -2,6 +2,7 @@ package ein.mono.favblock.model.service;
 
 import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.List;
 
 import ein.mono.common.JDBCTemplate;
 import ein.mono.favblock.model.dao.FBDao;
@@ -134,6 +135,13 @@ public class FBService {
 		int favorCount = new FBDao().selectFavorCount(con, partnerCode);		
 		JDBCTemplate.close(con);	
 		return favorCount;
+	}
+
+	public List<FBVo> selectLBList(String mCode, String fb_type) {
+		Connection con = JDBCTemplate.getConnection();
+		ArrayList<FBVo> list = new FBDao().selectFBList2(con, mCode, fb_type);
+		
+		return list;
 	}
 	
 }

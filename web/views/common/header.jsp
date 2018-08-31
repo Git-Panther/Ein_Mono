@@ -144,7 +144,7 @@
 		  <%if(member.getMemberRank().equals("일반회원")){%>
 		 	  location.href="/mono/views/request/requestForm.jsp?page="+auction;  
 		  <%}else if(member.getMemberRank().equals("미승인업체")){%>
-			  alert("승인을 먼저 해주시길 바랍니다.");	
+		 	 alert("승인을 먼저 해주시길 바랍니다.");	
 		  <%}else{%>
 		  	  location.href="/mono/selectRequestList.do";
 		  <%}%>
