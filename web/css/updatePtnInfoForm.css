@@ -1,0 +1,219 @@
+@charset "UTF-8";
+
+.ptnProfileArea{
+	width:1600px;
+	height:2500px;
+	margin-left:auto;
+	margin-right:auto;
+	text-align:center;
+}
+
+.profileArea{
+	display:inline-block;
+	margin-left:115px;
+}
+
+.ptnInfo{
+	text-align:center;
+}
+
+.ptnDefaultInfo{
+	margin-top:30px;
+	margin-bottom: 30px;
+	margin-right:35px;
+	display:inline-block;
+}
+
+.ptnLogo{
+	width:300px;
+	height:300px;
+	border:1px solid black;
+}
+
+.photoThumnail:hover
+, .ptnInfoTab:hover
+, #updateLogoBtn:hover
+, #submitBtn:hover
+, .addBtn:hover
+, .removeBtn:hover
+, .removeRowBtn:hover
+, .photoArea:hover
+, .photoBlank:hover
+, .deletePhotoBtn:hover{
+	cursor:pointer;
+}
+
+.ptnBtn{
+	width:300px;
+	height:50px;
+	border:1px solid black;
+	text-align:center;
+	line-height:50px;
+	font-size:25px;
+}
+
+.ptnInfoTab{
+	width:160px;
+	height:40px;
+	text-align:center;
+	padding-top:10px;
+	padding-bottom:10px;
+	padding-left:30px;
+	padding-right:30px;
+	font-size:25px;
+	border:1px solid black;
+}
+
+.detailInfoTab, .detailInfoTab tr, .detailInfoTab td{
+	border-collapse:collapse;
+	border-spacing:0px 0px;
+}
+
+#detailInfoArea{
+	margin:auto;
+}
+
+.detailInfoColTitle{
+	padding:10px;
+	width:200px;
+	height:auto;
+	font-size:20px;
+	font-weight:bold;
+}
+
+.detailInfoColContent{
+	padding-bottom:20px;
+	padding-top:20px;
+	width:760px;
+	height:auto;
+	font-size:20px;
+}
+
+.inputString{
+	width:300px;	
+}
+
+#introArea{
+	border:1px solid black;
+	width:930px;
+	padding:30px;
+	font-size:18px;
+	text-align:justify;
+}
+
+#ptnPhotoArea{
+	border:1px solid black;
+	width:930px;
+	padding:30px;
+	text-align:center;
+}
+
+.photoWrapper{
+	margin:50px;
+	display:inline-block;
+}
+
+.photoArea, .photoBlank{
+	border:1px solid black;
+	width:320px;
+	height:180px;
+	display:inline-block;
+}
+
+.photoBlank{
+	line-height:180px;
+}
+
+.photoArea img{
+	width:320px;
+	height:180px;
+}
+
+#detailInfoArea *{
+	text-align:center;
+}
+
+#detailInfoArea td{
+	border:1px solid black;	
+}
+
+.ptntInfo{
+	border-spacing:20px 20px;
+}
+
+.ptntInfo td *{
+	margin-top:auto;
+	margin-left:auto;
+	margin-right:auto;
+	margin-bottom:auto;
+	text-align:center;
+}
+
+.addBtn{
+	border:1px solid black;
+	font-weight:bold;
+	width:auto;
+	height:auto;
+	text-align:center;
+	padding:10px;
+	display:inline-block;
+}
+
+.removeBtn, .removeRowBtn{
+	border:1px solid black;
+	font-weight:bold;
+	width:40px;
+	height:25px;
+	text-align:center;
+	padding:5px;
+	display:inline-block;
+	margin:5px;
+}
+
+.removeBlank{
+	width:40px;
+	height:25px;
+	display:inline-block;
+	padding:5px;
+	margin:5px;
+}
+
+#addUpdateInfoBtn{
+	margin-top:25px;
+	margin-left:500px;
+	margin-right:500px;
+}
+
+input[name=updateContent]{
+	width:650px;
+}
+
+.ptnCategory{
+	width:960px;
+	border-top:1px solid #939393;
+	border-bottom:1px solid #939393;
+	float:left;
+	font-size:20px;
+	heigth:100px;
+	font-size:30px;
+	padding:15px;
+	text-align:justify;
+}
+
+#ptnPhotoArea table{
+	text-align:center;
+}
+
+.addPhotoBtn, .updatePhotoBtn{
+	display:none;
+}
+
+.deletePhotoBtn, .removePhotoBlind{
+	width:20px;
+	height:20px;
+	display:inline-block;
+}
+
+.deletePhotoBtn{
+	border: 1px solid black;
+}
